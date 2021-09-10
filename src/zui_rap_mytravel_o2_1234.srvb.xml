@@ -5,35 +5,8 @@
    <SRVB>
     <METADATA>
      <NAME>ZUI_RAP_MYTRAVEL_O2_1234</NAME>
-     <TYPE>SRVB/SVB</TYPE>
+     <VERSION>active</VERSION>
      <DESCRIPTION>OData V2 UI service for SAP Fiori Travel App</DESCRIPTION>
-     <LANGUAGE>EN</LANGUAGE>
-     <LINKS>
-      <item>
-       <HREF>versions</HREF>
-       <REL>http://www.sap.com/adt/relations/versions</REL>
-       <TITLE>Historic versions</TITLE>
-      </item>
-      <item>
-       <HREF>/sap/bc/adt/businessservices/odatav2/ZUI_RAP_MYTRAVEL_O2_1234</HREF>
-       <REL>http://www.sap.com/categories/odatav2</REL>
-       <TYPE>application/vnd.sap.adt.businessservices.odatav2.v2+xml</TYPE>
-       <TITLE>ODATAV2</TITLE>
-      </item>
-      <item>
-       <HREF>/sap/bc/adt/businessservices/testclass</HREF>
-       <REL>http://www.sap.com/categories/testclass</REL>
-       <TYPE>application/vnd.sap.adt.businessservices.testclass.v1+xml</TYPE>
-       <TITLE>TESTCLASS</TITLE>
-      </item>
-      <item>
-       <HREF>/sap/bc/adt/businessservices/semanticversion</HREF>
-       <REL>http://www.sap.com/categories/semanticversion</REL>
-       <TYPE>application/vnd.sap.adt.businessservices.semanticversion.v1+xml</TYPE>
-       <TITLE>SemanticVersion</TITLE>
-      </item>
-     </LINKS>
-     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>
@@ -58,7 +31,6 @@
      </SERVICES>
     </CONTENT>
     <PUBLISHED>true</PUBLISHED>
-    <BINDING_CREATED>true</BINDING_CREATED>
    </SRVB>
   </asx:values>
  </asx:abap>

@@ -2,16 +2,10 @@
 @EndUserText.label: 'Booking BO view'
  define view entity ZI_RAP_Booking_1234
    as select from zrap_book_1234 as Booking
-
-   association to parent ZI_RAP_Travel_1234        as _Travel     on  $projection.TravelUUID = _Travel.TravelUUID
+      association to parent ZI_RAP_Travel_1234        as _Travel     on  $projection.TravelUUID = _Travel.TravelUUID
    
    association [1..1] to ZI_RAP_Customer_1234           as _Customer   on  $projection.CustomerID   = _Customer.CustomerID
-   association [1..1] to /DMO/I_Carrier            as _Carrier    on  $projection.CarrierID    = _Carrier.AirlineID
-   association [1..1] to /DMO/I_Connection         as _Connection on  $projection.CarrierID    = _Connection.AirlineID
-                                                                  and $projection.ConnectionID = _Connection.ConnectionID
-   association [1..1] to /DMO/I_Flight             as _Flight     on  $projection.CarrierID    = _Flight.AirlineID
-                                                                  and $projection.ConnectionID = _Flight.ConnectionID
-                                                                  and $projection.FlightDate   = _Flight.FlightDate
+   association [1..1] to scarr            as _Carrier    on  $projection.CarrierID    = _Carrier.carrid
    association [0..1] to I_Currency                as _Currency   on $projection.CurrencyCode    = _Currency.Currency    
  {
    key booking_uuid          as BookingUUID,
@@ -36,8 +30,6 @@
        _Travel,
        _Customer,
        _Carrier,
-       _Connection,
-       _Flight,
        _Currency
  }
  

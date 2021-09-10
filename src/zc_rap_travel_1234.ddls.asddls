@@ -8,16 +8,13 @@ define root view entity ZC_RAP_Travel_1234
   key TravelUUID,
       @Search.defaultSearchElement: true
       TravelID,
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Agency',element: 'AgencyID' } }]
-      @ObjectModel.text.element:['AgencyName']
       @Search.defaultSearchElement: true
       AgencyID,
-      _Agency.Name       as AgencyName,
       @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_RAP_Customer_1234',element: 'CustomerID' } }]
       @ObjectModel.text.element:['CustomerName']
       @Search.defaultSearchElement: true
       CustomerID,
-      _Customer.LastName as CustomerName,
+      _Customer.FirstName as CustomerName,
       BeginDate,
       EndDate,
       @Semantics.amount.currencyCode: 'CurrencyCode'
@@ -36,7 +33,7 @@ define root view entity ZC_RAP_Travel_1234
       LocalLastChangedAt,
       
       /* Associations */
-      _Agency,
+      
       _Booking : redirected to composition child ZC_RAP_BOOKING_1234,
       _Currency,
       _Customer

@@ -10,11 +10,6 @@
     <LANGUAGE>EN</LANGUAGE>
     <LINKS>
      <item>
-      <HREF>./zc_rap_travel_1234/source/main/versions</HREF>
-      <REL>http://www.sap.com/adt/relations/versions</REL>
-      <TITLE>Historic versions</TITLE>
-     </item>
-     <item>
       <HREF>./zc_rap_travel_1234/source/main</HREF>
       <REL>http://www.sap.com/adt/relations/source</REL>
       <TYPE>text/plain</TYPE>
@@ -25,6 +20,11 @@
       <REL>http://www.sap.com/adt/relations/source</REL>
       <TYPE>text/html</TYPE>
       <TITLE>Source Content (HTML)</TITLE>
+     </item>
+     <item>
+      <HREF>./zc_rap_travel_1234/source/main/versions</HREF>
+      <REL>http://www.sap.com/adt/relations/versions</REL>
+      <TITLE>Historic versions</TITLE>
      </item>
      <item>
       <HREF>./zc_rap_travel_1234/objectstructure</HREF>

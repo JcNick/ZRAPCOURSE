@@ -41,11 +41,11 @@ CLASS lhc_Travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR Travel~validateDates.
 
     METHODS is_update_granted IMPORTING has_before_image      TYPE abap_bool
-                                        overall_status        TYPE /dmo/overall_status
+                                        overall_status        TYPE zrapoverall_status
                               RETURNING VALUE(update_granted) TYPE abap_bool.
 
     METHODS is_delete_granted IMPORTING has_before_image      TYPE abap_bool
-                                        overall_status        TYPE /dmo/overall_status
+                                        overall_status        TYPE zrapoverall_status
                               RETURNING VALUE(delete_granted) TYPE abap_bool.
 
     METHODS is_create_granted RETURNING VALUE(create_granted) TYPE abap_bool.
@@ -196,8 +196,8 @@ CLASS lhc_Travel IMPLEMENTATION.
 
   METHOD recalcTotalPrice.
     TYPES: BEGIN OF ty_amount_per_currencycode,
-             amount        TYPE /dmo/total_price,
-             currency_code TYPE /dmo/currency_code,
+             amount        TYPE zraptotal_price,
+             currency_code TYPE zrappcurrency_code,
            END OF ty_amount_per_currencycode.
 
     DATA: amount_per_currencycode TYPE STANDARD TABLE OF ty_amount_per_currencycode.
@@ -232,16 +232,16 @@ CLASS lhc_Travel IMPLEMENTATION.
         IF single_amount_per_currencycode-currency_code = <travel>-CurrencyCode.
           <travel>-TotalPrice += single_amount_per_currencycode-amount.
         ELSE.
-          /dmo/cl_flight_amdp=>convert_currency(
-             EXPORTING
-               iv_amount                   =  single_amount_per_currencycode-amount
-               iv_currency_code_source     =  single_amount_per_currencycode-currency_code
-               iv_currency_code_target     =  <travel>-CurrencyCode
-               iv_exchange_rate_date       =  cl_abap_context_info=>get_system_date( )
-             IMPORTING
-               ev_amount                   = DATA(total_booking_price_per_curr)
-            ).
-          <travel>-TotalPrice += total_booking_price_per_curr.
+*          /dmo/cl_flight_amdp=>convert_currency(
+*             EXPORTING
+*               iv_amount                   =  single_amount_per_currencycode-amount
+*               iv_currency_code_source     =  single_amount_per_currencycode-currency_code
+*               iv_currency_code_target     =  <travel>-CurrencyCode
+*               iv_exchange_rate_date       =  cl_abap_context_info=>get_system_date( )
+*             IMPORTING
+*               ev_amount                   = DATA(total_booking_price_per_curr)
+*            ).
+*          <travel>-TotalPrice += total_booking_price_per_curr.
         ENDIF.
       ENDLOOP.
     ENDLOOP.
@@ -329,7 +329,7 @@ CLASS lhc_Travel IMPLEMENTATION.
 
     " Select max travel ID
     SELECT SINGLE
-        FROM  zrap_atrav_1234
+        FROM  zrap_travel_1234
         FIELDS MAX( travel_id ) AS travelID
         INTO @DATA(max_travelid).
 
@@ -347,44 +347,44 @@ CLASS lhc_Travel IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validateAgency.
-    " Read relevant travel instance data
-    READ ENTITIES OF zi_rap_travel_1234 IN LOCAL MODE
-      ENTITY Travel
-        FIELDS ( AgencyID ) WITH CORRESPONDING #( keys )
-      RESULT DATA(travels).
-    DATA agencies TYPE SORTED TABLE OF /dmo/agency WITH UNIQUE KEY agency_id.
-
-    " Optimization of DB select: extract distinct non-initial agency IDs
-    agencies = CORRESPONDING #( travels DISCARDING DUPLICATES MAPPING agency_id = AgencyID EXCEPT * ).
-    DELETE agencies WHERE agency_id IS INITIAL.
-
-    IF agencies IS NOT INITIAL.
-      " Check if agency ID exist
-      SELECT FROM /dmo/agency FIELDS agency_id
-        FOR ALL ENTRIES IN @agencies
-        WHERE agency_id = @agencies-agency_id
-        INTO TABLE @DATA(agencies_db).
-    ENDIF.
-    " Raise msg for non existing and initial agencyID
-    LOOP AT travels INTO DATA(travel).
-      " Clear state messages that might exist
-      APPEND VALUE #(  %tky               = travel-%tky
-                       %state_area        = 'VALIDATE_AGENCY' )
-        TO reported-travel.
-
-      IF travel-AgencyID IS INITIAL OR NOT line_exists( agencies_db[ agency_id = travel-AgencyID ] ).
-        APPEND VALUE #( %tky = travel-%tky ) TO failed-travel.
-
-        APPEND VALUE #( %tky        = travel-%tky
-                        %state_area = 'VALIDATE_AGENCY'
-                        %msg        = NEW zcm_rap_1234(
-                                          severity = if_abap_behv_message=>severity-error
-                                          textid   = zcm_rap_1234=>agency_unknown
-                                          agencyid = travel-AgencyID )
-                        %element-AgencyID = if_abap_behv=>mk-on )
-          TO reported-travel.
-      ENDIF.
-    ENDLOOP.
+*    " Read relevant travel instance data
+*    READ ENTITIES OF zi_rap_travel_1234 IN LOCAL MODE
+*      ENTITY Travel
+*        FIELDS ( AgencyID ) WITH CORRESPONDING #( keys )
+*      RESULT DATA(travels).
+*    DATA agencies TYPE SORTED TABLE OF /dmo/agency WITH UNIQUE KEY agency_id.
+*
+*    " Optimization of DB select: extract distinct non-initial agency IDs
+*    agencies = CORRESPONDING #( travels DISCARDING DUPLICATES MAPPING agency_id = AgencyID EXCEPT * ).
+*    DELETE agencies WHERE agency_id IS INITIAL.
+*
+*    IF agencies IS NOT INITIAL.
+*      " Check if agency ID exist
+*      SELECT FROM /dmo/agency FIELDS agency_id
+*        FOR ALL ENTRIES IN @agencies
+*        WHERE agency_id = @agencies-agency_id
+*        INTO TABLE @DATA(agencies_db).
+*    ENDIF.
+*    " Raise msg for non existing and initial agencyID
+*    LOOP AT travels INTO DATA(travel).
+*      " Clear state messages that might exist
+*      APPEND VALUE #(  %tky               = travel-%tky
+*                       %state_area        = 'VALIDATE_AGENCY' )
+*        TO reported-travel.
+*
+*      IF travel-AgencyID IS INITIAL OR NOT line_exists( agencies_db[ agency_id = travel-AgencyID ] ).
+*        APPEND VALUE #( %tky = travel-%tky ) TO failed-travel.
+*
+*        APPEND VALUE #( %tky        = travel-%tky
+*                        %state_area = 'VALIDATE_AGENCY'
+*                        %msg        = NEW zcm_rap_1234(
+*                                          severity = if_abap_behv_message=>severity-error
+*                                          textid   = zcm_rap_1234=>agency_unknown
+*                                          agencyid = travel-AgencyID )
+*                        %element-AgencyID = if_abap_behv=>mk-on )
+*          TO reported-travel.
+*      ENDIF.
+*    ENDLOOP.
   ENDMETHOD.
 
   METHOD validateCustomer.
@@ -394,16 +394,16 @@ CLASS lhc_Travel IMPLEMENTATION.
         FIELDS ( CustomerID ) WITH CORRESPONDING #( keys )
       RESULT DATA(travels).
 
-    DATA customers TYPE SORTED TABLE OF /dmo/customer WITH UNIQUE KEY customer_id.
+    DATA customers TYPE SORTED TABLE OF SCUSTOM WITH UNIQUE KEY id.
 
     " Optimization of DB select: extract distinct non-initial customer IDs
-    customers = CORRESPONDING #( travels DISCARDING DUPLICATES MAPPING customer_id = CustomerID EXCEPT * ).
-    DELETE customers WHERE customer_id IS INITIAL.
+    customers = CORRESPONDING #( travels DISCARDING DUPLICATES MAPPING id = CustomerID EXCEPT * ).
+    DELETE customers WHERE id IS INITIAL.
     IF customers IS NOT INITIAL.
       " Check if customer ID exist
-      SELECT FROM /dmo/customer FIELDS customer_id
+      SELECT FROM SCUSTOM FIELDS id
         FOR ALL ENTRIES IN @customers
-        WHERE customer_id = @customers-customer_id
+        WHERE id = @customers-id
         INTO TABLE @DATA(customers_db).
     ENDIF.
 
@@ -414,7 +414,7 @@ CLASS lhc_Travel IMPLEMENTATION.
                        %state_area = 'VALIDATE_CUSTOMER' )
         TO reported-travel.
 
-      IF travel-CustomerID IS INITIAL OR NOT line_exists( customers_db[ customer_id = travel-CustomerID ] ).
+      IF travel-CustomerID IS INITIAL OR NOT line_exists( customers_db[ id = travel-CustomerID ] ).
         APPEND VALUE #(  %tky = travel-%tky ) TO failed-travel.
 
         APPEND VALUE #(  %tky        = travel-%tky

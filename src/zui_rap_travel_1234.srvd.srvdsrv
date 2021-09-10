@@ -2,12 +2,7 @@
 define service ZUI_RAP_Travel_1234 {
   expose ZC_RAP_Travel_1234 as Travel;
   expose ZC_RAP_BOOKING_1234 as Booking;
-  expose /DMO/I_Agency as Agency;
   expose ZI_RAP_Customer_1234 as Customer;
-  expose /DMO/I_Flight as Flight;
-  expose /DMO/I_Carrier as Carrier;
-  expose /DMO/I_Connection as Connection;
-  expose /DMO/I_Airport as Airport;
   expose I_Currency as Currency;
   expose I_Country as country;
 }

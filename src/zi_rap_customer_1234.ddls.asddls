@@ -2,19 +2,13 @@
 @EndUserText.label: 'Customer BO view'
 @Metadata.allowExtensions: true
 define view entity ZI_RAP_Customer_1234
-  as select from /DMO/I_Customer as Customer
+  as select from scustom as Customer
 {
-  key CustomerID,
-      FirstName,
-      LastName,
-      Title,
-      Street,
-      PostalCode,
-      City,
-      CountryCode,
-      PhoneNumber,
-      EMailAddress,
-      /* Associations */
-      _Country
+  key id    as CustomerID,
+      name  as FirstName,
+      city  as City,
+
+      email as EMailAddress
+
 
 }

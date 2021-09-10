@@ -15,16 +15,10 @@ define view entity ZC_RAP_BOOKING_1234
       @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
       CustomerID,
-      _Customer.LastName as CustomerName,
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Carrier', element: 'AirlineID' }}]
+      _Customer.FirstName as CustomerName,
       @ObjectModel.text.element: ['CarrierName']
       CarrierID,
-      _Carrier.Name      as CarrierName,
-      @Consumption.valueHelpDefinition: [ {entity: {name: '/DMO/I_Flight', element: 'ConnectionID'},
-                                           additionalBinding: [ { localElement: 'CarrierID',    element: 'AirlineID' },
-                                                                { localElement: 'FlightDate',   element: 'FlightDate',   usage: #RESULT},
-                                                                { localElement: 'FlightPrice',  element: 'Price',        usage: #RESULT },
-                                                                { localElement: 'CurrencyCode', element: 'CurrencyCode', usage: #RESULT } ] } ]
+      _Carrier.carrname      as CarrierName,
       ConnectionID,
       FlightDate,
       @Semantics.amount.currencyCode: 'CurrencyCode'
@@ -38,9 +32,7 @@ define view entity ZC_RAP_BOOKING_1234
       LocalLastChangedAt,
       /* Associations */
       _Carrier,
-      _Connection,
       _Currency,
       _Customer,
-      _Flight,
       _Travel : redirected to parent ZC_RAP_Travel_1234
 }

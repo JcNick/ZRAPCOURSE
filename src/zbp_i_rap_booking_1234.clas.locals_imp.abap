@@ -12,7 +12,7 @@ ENDCLASS.
 CLASS lhc_Booking IMPLEMENTATION.
 
   METHOD calculateBookingID.
-      DATA max_bookingid TYPE /dmo/booking_id.
+      DATA max_bookingid TYPE zrapbooking_id.
     DATA update TYPE TABLE FOR UPDATE ZI_RAP_Travel_1234\\Booking.
 
     " Read all travels for the requested bookings.

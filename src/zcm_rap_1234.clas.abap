@@ -51,8 +51,8 @@ CLASS zcm_rap_1234 DEFINITION
         attr4 TYPE scx_attrname VALUE '',
       END OF unauthorized .
 
-    DATA begindate TYPE /dmo/begin_date READ-ONLY.
-    DATA enddate TYPE /dmo/end_date READ-ONLY.
+    DATA begindate TYPE zrapbegin_date READ-ONLY.
+    DATA enddate TYPE zrapend_date READ-ONLY.
     DATA travelid TYPE string READ-ONLY.
     DATA customerid TYPE string READ-ONLY.
     DATA agencyid TYPE string READ-ONLY.
@@ -65,11 +65,11 @@ CLASS zcm_rap_1234 DEFINITION
         severity   TYPE if_abap_behv_message=>t_severity DEFAULT if_abap_behv_message=>severity-error
         textid     LIKE if_t100_message=>t100key OPTIONAL
         previous   TYPE REF TO cx_root OPTIONAL
-        begindate  TYPE /dmo/begin_date OPTIONAL
-        enddate    TYPE /dmo/end_date OPTIONAL
-        travelid   TYPE /dmo/travel_id OPTIONAL
-        customerid TYPE /dmo/customer_id OPTIONAL
-        agencyid   TYPE /dmo/agency_id  OPTIONAL.
+        begindate  TYPE zrapbegin_date OPTIONAL
+        enddate    TYPE zrapend_date OPTIONAL
+        travelid   TYPE zraptravel_id OPTIONAL
+        customerid TYPE zrapcustomer_id OPTIONAL
+        agencyid   TYPE zrapagency_id  OPTIONAL.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
